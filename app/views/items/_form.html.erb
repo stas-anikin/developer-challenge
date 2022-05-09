@@ -1,0 +1,30 @@
+<% if @item.errors.present? %>
+  <p>
+    <%= @item.errors.full_messages.join(", ") %>
+  </p>
+<% end %>
+
+
+<%= form_with model: @item, local: true do |f| %>
+  <div>
+    <%= f.label :title %>
+    <%= f.text_field(:title, placeholder: "item Name") %>
+  </div>
+  <div >
+    <%= f.label :description %>
+    <%= f.text_area(:description, cols: 50, rows: 5, placeholder: "Provide Description") %>
+  </div>
+  <div >
+    <%= f.label :price %>
+    <%= f.number_field(:price, min: 0, placeholder: "Enter Price", step: :any) %>
+  </div>
+  <div >
+    <%= f.label :quantity %>
+    <%= f.number_field(:quantity, min: 0, placeholder: "Enter quantity", step: :any) %>
+  </div>
+  <% if @item.new_record? %>
+    <%= f.submit("Create") %>
+  <% else %>
+    <%= f.submit("Update") %>
+  <% end %>
+<% end %>

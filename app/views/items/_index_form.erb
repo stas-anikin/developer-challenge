@@ -1,0 +1,64 @@
+<table>
+  <tr>
+    <td>ID</td>
+    <td>Title</td>
+    <td>Description</td>
+    <td>Quantity</td>
+    <td>Price</td>
+    <% if @items.present? && @items[0].deleted %>
+      <td>Deletion Reason</td>
+    <% end %>
+    <td>View</td>
+    <td>Edit</td>
+    <% if @items.present? && @items[0].deleted %>
+      <td>Unarchive</td>
+    <% end %>
+    <td>Delete</td>
+  </tr>
+  <% if @items.length === 0 %>
+    <tr>
+      <td colspan="7">No items found</td>
+    </tr>
+  <% else %>
+    <% @items.each do |item| %>
+      <tr>
+        <td><%= item.id %></td>
+        <%= link_to item do %>
+          <td><%= item.title %></td>
+        <% end %>
+        <td><%= item.description %></td>
+        <td><%= item.quantity %></td>
+        <td><%= number_to_currency item.price %></td>
+                <% if item.deleted? %>
+                        <td><%= item.deletion_reason %></td>
+<% end %>
+        <td>    <%= link_to "View", item_path(item), class: "btn btn-info" %></td>
+        <td>    <%= link_to "Edit", edit_item_path(item), class: "btn btn-info" %></td>
+        <% if item.deleted? %>
+          <td>
+            <%= form_with model: item, local: true do |f| %>
+              <%= f.hidden_field :deleted, :value => false %>
+              <%= f.submit("Undelete", class: "btn btn-primary") %>
+            <% end %>
+          </td>
+          <td>
+            <%= button_to(
+                  "Permanently Delete",
+                  item_path(item),
+                  method: :delete,
+                  class: "btn btn-danger",
+                  data: { confirm: "This action is permanent and irreversible, are you sure?" },
+                ) %>
+          </td>
+        <% else %>
+          <td>
+            <%= form_with model: item, local: true do |f| %>
+              <%= f.hidden_field :deleted, :value => true %>
+              <%= f.submit("Delete", class: "btn btn-primary") %>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
