@@ -17,7 +17,7 @@
   </tr>
   <% if @items.length === 0 %>
     <tr>
-      <td colspan="7">No items found</td>
+      <td>No items found</td>
     </tr>
   <% else %>
     <% @items.each do |item| %>
@@ -32,13 +32,13 @@
                 <% if item.deleted? %>
                         <td><%= item.deletion_reason %></td>
 <% end %>
-        <td>    <%= link_to "View", item_path(item), class: "btn btn-info" %></td>
-        <td>    <%= link_to "Edit", edit_item_path(item), class: "btn btn-info" %></td>
+        <td>    <%= link_to "View", item_path(item) %></td>
+        <td>    <%= link_to "Edit", edit_item_path(item) %></td>
         <% if item.deleted? %>
           <td>
             <%= form_with model: item, local: true do |f| %>
               <%= f.hidden_field :deleted, :value => false %>
-              <%= f.submit("Undelete", class: "btn btn-primary") %>
+              <%= f.submit("Undelete") %>
             <% end %>
           </td>
           <td>
@@ -46,16 +46,18 @@
                   "Permanently Delete",
                   item_path(item),
                   method: :delete,
-                  class: "btn btn-danger",
                   data: { confirm: "This action is permanent and irreversible, are you sure?" },
                 ) %>
           </td>
         <% else %>
-          <td>
-            <%= form_with model: item, local: true do |f| %>
-              <%= f.hidden_field :deleted, :value => true %>
-              <%= f.submit("Delete", class: "btn btn-primary") %>
-            <% end %>
+ 
+               <td>
+                  <%= button_to(
+                        "Delete",
+                        deletion_reason_path(item),
+                        method: :get,
+                        data: { confirm: "Are you sure?" },
+                      ) %>
           </td>
         <% end %>
       </tr>

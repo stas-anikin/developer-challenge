@@ -1,0 +1,13 @@
+<% if @item.errors.present? %>
+  <p>
+    <%= @item.errors.full_messages.join(", ") %>
+  </p>
+<% end %>
+<%= form_with model: @item, local: true do |f| %>
+  <div>
+    <%= f.hidden_field :deleted, :value => true %>
+    <%= f.label :deletion_reason %>
+    <%= f.text_field(:deletion_reason, placeholder: "Give me one good reason") %>
+  </div>
+  <%= f.submit("Delete") %>
+<% end %>

@@ -21,7 +21,6 @@ class ItemsController < ApplicationController
 
   def create
     @item = Item.new(item_params)
-
     respond_to do |format|
       if @item.save
         format.html { redirect_to item_url(@item), notice: "Item successfully created." }
@@ -33,9 +32,18 @@ class ItemsController < ApplicationController
     end
   end
 
+  # an action to get the reason for deletion
+  def deletion_reason
+  end
+
+  # update action has an if statement to see if the update in question is a soft deletion or an update of params
   def update
     respond_to do |format|
       if @item.update(item_params)
+        # checking if the item is being restored and if so, clearing its deletion reason
+        if !@item.deleted && @item.deletion_reason.present?
+          @item.update(deletion_reason: nil)
+        end
         if @item.deleted
           format.html { redirect_to archive_url, notice: "Item successfully deleted." }
           format.json { render :show, status: :ok, location: @item }
@@ -52,7 +60,6 @@ class ItemsController < ApplicationController
 
   def destroy
     @item.destroy
-
     respond_to do |format|
       format.html { redirect_to items_url, notice: "Item successfully deleted." }
       format.json { head :no_content }
@@ -66,6 +73,6 @@ class ItemsController < ApplicationController
   end
 
   def item_params
-    params.require(:item).permit(:title, :quantity, :price, :description, :deleted)
+    params.require(:item).permit(:title, :quantity, :price, :description, :deleted, :deletion_reason)
   end
 end

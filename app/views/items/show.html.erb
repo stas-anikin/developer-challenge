@@ -1,31 +1,24 @@
-<div class='shadow-sm p-3 mb-5 bg-white rounded overflow-wrap'>
-  <div class='clearfix'>
-    <h1 class='float-left'>
-      <span class='badge badge-pill badge-info'>
+<div>
+  <div>
+    <h1>
+      <span>
         <%= @item.id %>
       </span>
       <%= @item.title %>
     </h1>
-    <h1 class='float-right text-center'>
-              <span class='badge badge-pill badge-success'><%= number_to_currency @item.price %></span>
+    <h1 >
+              <span ><%= number_to_currency @item.price %></span>
     </h1>
     
   </div>
-  <small class='text-muted'>
+  <small>
     currently <em><%= @item.quantity %></em> in stock
   <small>
   <hr/>
-  <p class='shadow-none p-3 rounded'><%= @item.description %></p>
+  <p ><%= @item.description %></p>
  
   <div>
-    <%= link_to(
-      "Delete",
-      item_path(@item),
-      method: :delete,
-      class: 'btn btn-danger',
-      data: { confirm: 'are you sure?' },
-      )
-    %>
-    <%= link_to "Edit", edit_item_path(@item), class: 'btn btn-info'%>
+
+    <%= link_to "Edit", edit_item_path(@item) %>
   </div>
 </div> 

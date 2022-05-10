@@ -1,4 +1,5 @@
 class Item < ApplicationRecord
+  # basic validations to ensure that the title, description, price, and quantity are present and price and quantity are not negative
   validates(:title,
             presence: true,
             uniqueness: true)
